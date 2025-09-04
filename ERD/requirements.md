@@ -64,18 +64,96 @@
 
 ## Relationships
 
-- **User → Booking**: A user (guest) can make many bookings.  
-  Relationship: `1-to-Many`
+1. User ↔ Property
 
-- **User → Property**: A user (host) can list many properties.  
-  Relationship: `1-to-Many`
+Relationship: A host (User) can list multiple properties.
 
-- **Property → Booking**: A property can have many bookings.  
-  Relationship: `1-to-Many`
+Type: 1:M
 
-- **Booking → Review**: A booking can have only one review.  
-  Relationship: `1-to-1`
+Foreign Key: Property.host_id → User.user_id
 
+Meaning:
+
+One host owns many properties.
+
+A property belongs to exactly one host.
+
+2. User ↔ Booking
+
+Relationship: A guest (User) can make multiple bookings.
+
+Type: 1:M
+
+Foreign Key: Booking.user_id → User.user_id
+
+Meaning:
+
+One guest can create many bookings.
+
+Each booking belongs to exactly one guest.
+
+3. Property ↔ Booking
+
+Relationship: A property can have multiple bookings over time.
+
+Type: 1:M
+
+Foreign Key: Booking.property_id → Property.property_id
+
+Meaning:
+
+One property can be booked multiple times by different guests.
+
+Each booking is tied to exactly one property.
+
+4. Booking ↔ Payment
+
+Relationship: Each booking must have exactly one payment.
+
+Type: 1:1
+
+Foreign Key: Payment.booking_id → Booking.booking_id
+
+Meaning:
+
+A booking cannot have multiple payments.
+
+A payment belongs to one booking only.
+
+5. User ↔ Review ↔ Property
+
+This is a many-to-many relationship resolved using the Review table.
+
+Between User and Review:
+1:M → Review.user_id → User.user_id
+
+A user can write many reviews, but each review is by one user.
+
+Between Property and Review:
+1:M → Review.property_id → Property.property_id
+
+A property can have many reviews, but each review is for one property.
+
+Final Interpretation:
+Many users can review many properties, but each review connects one user and one property.
+
+6. User ↔ Message (Self-Referential)
+
+Relationship: Users can send messages to other users.
+
+Type: 1:M (twice, self-referencing)
+
+Foreign Keys:
+
+Message.sender_id → User.user_id
+
+Message.recipient_id → User.user_id
+
+Meaning:
+
+One user can send many messages.
+
+Each message has exactly one sender and one recipient.
 ---
 
 ## ERD Diagram
